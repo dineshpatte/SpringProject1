@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.demo.student;
 
 import jakarta.persistence.*;
 
@@ -9,6 +9,7 @@ import jakarta.persistence.*;
                 @UniqueConstraint(name = "student_email_unique", columnNames = "email")
         }
 )
+
 public class Student {
 
     @Id
