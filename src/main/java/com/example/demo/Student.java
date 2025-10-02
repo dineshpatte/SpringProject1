@@ -2,36 +2,45 @@ package com.example.demo;
 
 import jakarta.persistence.*;
 
-@Entity(name = "Student")
-public class student {
+@Entity
+@Table(
+        name = "student",
+        uniqueConstraints = {
+                @UniqueConstraint(name = "student_email_unique", columnNames = "email")
+        }
+)
+public class Student {
+
     @Id
-    @SequenceGenerator(
-            name = "student_sequence",
-            sequenceName = "student_sequence",
-            allocationSize = 1
-    )
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,
-            generator = "student_sequence"
-    )
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // MySQL-friendly
+    @Column(name = "id", updatable = false)
     private Long id;
+
+    @Column(name = "first_name", nullable = false, length = 100)
     private String firstName;
+
+    @Column(name = "last_name", nullable = false, length = 100)
     private String lastName;
+
+    @Column(name = "email", nullable = false, length = 150, unique = true)
     private String email;
-    private String age;
 
-    public student() {
+    @Column(name = "age", nullable = false)
+    private int age;
 
+    // Default constructor
+    public Student() {
     }
 
-
-    public student(Long id, String firstName, String lastName, String email, String age) {
-        this.id = id;
+    // Constructor without ID (ID is auto-generated)
+    public Student(String firstName, String lastName, String email, int age) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.age = age;
     }
 
+    // Getters and Setters
     public Long getId() {
         return id;
     }
@@ -56,20 +65,20 @@ public class student {
         this.lastName = lastName;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public String getEmail() {
         return email;
     }
 
-    public void setAge(String age) {
-        this.age = age;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public String getAge() {
+    public int getAge() {
         return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
     }
 
     @Override
@@ -82,5 +91,4 @@ public class student {
                 ", age=" + age +
                 '}';
     }
-
 }
